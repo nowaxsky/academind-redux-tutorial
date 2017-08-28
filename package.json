@@ -22,7 +22,8 @@
   "homepage": "https://github.com/nowaxsky/academind-redux-tutorial#readme",
   "dependencies": {
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
