@@ -30,7 +30,10 @@
 //
 // render(<App />, window.document.getElementById("app"));
 
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+
+//npm install redux-logger@2 --save
+import logger from "redux-logger";
 
 const mathReducer = (state = {result: 1, lastValues: [],}, action) => {
     switch (action.type) {
@@ -78,8 +81,21 @@ const userReducer = (state = {name: "Max", age: 27}, action) => {
     return state;
 };
 
-//Owing to unique of store, You need to use combineReducers
-const store = createStore(combineReducers({mathReducer, userReducer}));
+const myLogger = (store) => (next) => (action) => {
+    console.log("Logged Action: ", action);
+    next(action);
+};
+
+//{} will be overwritten by the reducers which have their own initial state
+const store = createStore(
+    combineReducers({mathReducer, userReducer}),
+    {},
+    applyMiddleware(myLogger, logger())
+
+    //try this
+    //applyMiddleware(myLogger)
+    //applyMiddleware(logger())
+);
 
 store.subscribe(() => {
     console.log("Store updated!", store.getState());
