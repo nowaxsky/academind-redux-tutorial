@@ -32,19 +32,42 @@
 
 import { createStore } from "redux";
 
-const reducer = (state, action) => {
+const initialState = {
+    result: 1,
+    lastValues: [],
+    username: "Max"
+};
+
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case "ADD":
-            state = state + action.payload;
+
+            //immutable way to retain the old state
+            state = {
+                //get all old properties of an object with spread operator in ES6
+                ...state,
+                //override old result
+                result: state.result + action.payload,
+                lastValues: [...state.lastValues, action.payload]
+            };
+
+            //this way cannot retain the old state
+            //state.lastValues.push(action.payload);
             break;
         case "SUBTRACT":
-            state = state - action.payload;
+            state = {
+                ...state,
+                result: state.result - action.payload,
+                lastValues: [...state.lastValues, action.payload]
+            };
+            state.lastValues.push(action.payload);
             break;
     }
     return state;
 };
 
-const store = createStore(reducer, 1);
+//reducer has been initialized by initialState
+const store = createStore(reducer);
 
 store.subscribe(() => {
     console.log("Store updated!", store.getState());
