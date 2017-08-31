@@ -1,6 +1,8 @@
 const userReducer = (state = {name: "Max", age: 27}, action) => {
     switch (action.type) {
-        case "USER_SET_NAME":
+
+        //for redux-promise
+        case "USER_SET_NAME_FULFILLED":
             state = {
                 ...state,
                 name: action.payload
